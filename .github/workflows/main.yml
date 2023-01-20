@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-      
+
     steps:
       - name: Clone repo
         uses: actions/checkout@master
@@ -24,6 +24,7 @@ jobs:
       - name: tfsec
         uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
         with:
+          working_directory: ''
           tfsec_args: --soft-fail
           github_token: ${{ secrets.TOKEN_GITHUB }}
 
