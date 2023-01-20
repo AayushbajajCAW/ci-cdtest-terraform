@@ -1,24 +1,17 @@
-variable "region_aws"{
-    type = string
-}
-variable "vpc_name" {
+
+variable "access_key_id" {
   type = string
 }
-variable "vpc_cidr_block"{
-    type="string"
+variable "access_key_secret" {
+  type = string
 }
-variable "subnet_zones" {
-  type=list(string)
+variable "cache_policy_name" {
+  type = string
 }
-variable "web_subnets" {
-  type=list(string)
+variable "s3_bucket_name" {
+  type = string
 }
-variable "server_type" {
-  
-}
-variable "image_name" {
-  
-}
-variable "public_key" {
-  
+
+variable "cache_policy_name_cloudfront" {
+  type = string
 }
