@@ -5,3 +5,4 @@ locals {
   environment     = "prod"
   project         = "Terraform_demo"
 }
+
