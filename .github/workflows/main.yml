@@ -1,6 +1,6 @@
 name: Deploy infra using Terraform
 on:
-pull_request:
+  pull_request:
   push:
     branches:
       - master
