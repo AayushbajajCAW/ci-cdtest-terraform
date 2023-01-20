@@ -1,16 +1,14 @@
-resource "aws_s3_bucket" "this" {
-  for_each      = var.s3_bucket_names
-  bucket        = each.key
+resource "aws_s3_bucket" "this-s3-bucket" {
+  bucket        = "${local.parent_org_name}-${local.cloud_provider}-${local.region}-${local.environment}-s3-${local.project}-${var.s3_bucket_name}"
   force_destroy = true
-  # website {
-  # index_document = "index.html"
-  # error_document = "index.html"
-  # }
+  tags = {
+    app-role               = "s3 Bucket"
+    app-name               = "${var.s3_bucket_name}-S3-Bucket"
+    security-accessibility = "Private"
+  }
 }
-resource "aws_s3_bucket_website_configuration" "example" {
-  for_each = var.s3_bucket_names
-  bucket   = each.key
-
+resource "aws_s3_bucket_website_configuration" "this-s3-website-configuration" {
+  bucket   = "${local.parent_org_name}-${local.cloud_provider}-${local.region}-${local.environment}-s3-${local.project}-${var.s3_bucket_name}"
   index_document {
     suffix = "index.html"
   }
@@ -18,12 +16,11 @@ resource "aws_s3_bucket_website_configuration" "example" {
     key = "index.html"
   }
   depends_on = [
-    aws_s3_bucket.this
+    aws_s3_bucket.this-s3-bucket
   ]
 }
-resource "aws_s3_bucket_policy" "this-policy" {
-  for_each = var.s3_bucket_names
-  bucket   = each.key
+resource "aws_s3_bucket_policy" "this-s3-policy" {
+  bucket   = "${local.parent_org_name}-${local.cloud_provider}-${local.region}-${local.environment}-s3-${local.project}-${var.s3_bucket_name}"
   policy   = <<POLICY
 {
     "Version": "2008-10-17",
@@ -34,19 +31,17 @@ resource "aws_s3_bucket_policy" "this-policy" {
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::${each.value}/*"
+            "Resource": "arn:aws:s3:::${local.parent_org_name}-${local.cloud_provider}-${local.region}-${local.environment}-s3-${local.project}-${var.s3_bucket_name}/*"
         }
     ]
 }
 POLICY
   depends_on = [
-    aws_s3_bucket.this
+    aws_s3_bucket.this-s3-bucket
   ]
 }
-
-resource "aws_s3_bucket_acl" "acl_policy" {
-  for_each = var.s3_bucket_names
-  bucket   = each.key
+resource "aws_s3_bucket_acl" "this-s3-acl_policy" {
+  bucket   = "${local.parent_org_name}-${local.cloud_provider}-${local.region}-${local.environment}-s3-${local.project}-${var.s3_bucket_name}"
   access_control_policy {
     grant {
       grantee {
@@ -95,6 +90,6 @@ resource "aws_s3_bucket_acl" "acl_policy" {
     }
   }
   depends_on = [
-    aws_s3_bucket.this
+    aws_s3_bucket.this-s3-bucket
   ]
 }
