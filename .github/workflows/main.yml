@@ -44,11 +44,11 @@ jobs:
         run: |
           terraform init \
           -backend-config="access_key="${{ secrets.AWS_ACCESS_KEY_ID }}" \
-          -backend-config="secret_key="${{ secrets.AWS_SECRET_ACCESS_KEY}}"
+          -backend-config="secret_key="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Post Init
         # if: always() && github.ref != 'refs/heads/master' && (steps.init.outcome == 'success' || steps.init.outcome == 'failure')
-        uses: robburger/terraform-pr-commenter@v1
+        uses: robburger/terraform-pr-commenter@v1.5.0
         with:
           commenter_type: init
           commenter_input: ${{ format('{0}{1}', steps.init.outputs.stdout, steps.init.outputs.stderr) }}
